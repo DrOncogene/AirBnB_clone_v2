@@ -7,7 +7,7 @@ import os
 
 
 class test_fileStorage(unittest.TestCase):
-    """ Class to test the file storage method """
+    """ Class to test the file storage engine """
 
     def setUp(self):
         """ Set up test environment """
@@ -101,9 +101,3 @@ class test_fileStorage(unittest.TestCase):
         for key in storage.all().keys():
             temp = key
         self.assertEqual(temp, 'BaseModel' + '.' + _id)
-
-    def test_storage_var_created(self):
-        """ FileStorage object storage created """
-        from models.engine.file_storage import FileStorage
-        print(type(storage))
-        self.assertEqual(type(storage), FileStorage)
