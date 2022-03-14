@@ -16,8 +16,8 @@ class DBStorage:
         passwd = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
         db_name = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine(f"mysql://{user}:{passwd}\
-                                      @{host}:3306/{db_name}",
+        self.__engine = create_engine(f"mysql+mysqldb://{user}:\
+                                      {passwd}@{host}:3306/{db_name}",
                                       pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             db = sqldb.connect(host=host, port=3306, user=user,
