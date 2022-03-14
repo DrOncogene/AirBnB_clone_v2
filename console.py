@@ -4,7 +4,7 @@ import cmd
 import sys
 import re
 from models.base_model import BaseModel
-from models.__init__ import storage
+from models import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -112,15 +112,16 @@ class HBNBCommand(cmd.Cmd):
         if cls not in HBNBCommand._classes:
             print("** class doesn't exist **")
             return
-        new = HBNBCommand._classes[cls]()
+        new_obj = HBNBCommand._classes[cls]()
         for param in params:
             attr, value = param.split('=')
-            if attr in dir(new):
+            if attr in dir(new_obj):
                 attr_t = self._types[attr] if attr in self._types else None
-                new.__dict__[attr] = (value if attr_t is None
-                                      else attr_t(value))
+                new_obj.__dict__[attr] = (value if attr_t is None
+                                          else attr_t(value))
+        new_obj.save()
         storage.save()
-        print(new.id)
+        print(new_obj.id)
 
     def do_show(self, args):
         """ Method to show an individual object
@@ -183,21 +184,20 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, args):
         """ Shows all objects, or all objects of a class
         [Usage]: all [<className>]\n"""
-        print_list = []
-
+        obj_list = []
         if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand._classes:
+            cls = args.strip(' ')  # remove possible trailing args
+            if cls not in HBNBCommand._classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+            for k, v in storage.all(HBNBCommand._classes[cls]).items():
+                if k.split('.')[0] == cls:
+                    obj_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
+            for k, v in storage.all().items():
+                obj_list.append(str(v))
 
-        print(print_list)
+        print(obj_list)
 
     def do_count(self, args):
         """Count current number of class instances
