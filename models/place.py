@@ -3,7 +3,9 @@
 import os
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+import models
 from models.base_model import BaseModel, Base
+from models.review import Review
 
 
 class Place(BaseModel, Base):
@@ -22,7 +24,15 @@ class Place(BaseModel, Base):
     latitude = Column(Float)
     longitude = Column(Float)
     amenity_ids = []
-
+    user = relationship('User', back_populates='places')
+    cities = relationship('City', back_populates='places')
+    
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
-        user = relationship('User', back_populates='places')
-        cities = relationship('City', back_populates='places')
+        reviews = relationship('Review', cascade='all, delete',
+                               back_populates='place')
+    else:
+        @property
+        def reviews(self):
+            all_reviews = models.storage.all(Review)
+            return [review for k, review in all_reviews.items()
+                    if review.place_id == self.id]
