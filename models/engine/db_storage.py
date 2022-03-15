@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models.base_model import BaseModel, Base
+from models.base_model import Base
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -17,7 +17,6 @@ class DBStorage:
     __engine = None
     __session = None
     _classes = {
-        "BaseModel": BaseModel,
         "User": User,
         "State": State,
         "City": City,
@@ -76,30 +75,7 @@ class DBStorage:
 
     def reload(self):
         """ creates all db tables"""
-        models = import_models()
-        Base = models['Base']
         Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(factory)
         self.__session = Session()
-
-
-def import_models():
-    from models.base_model import BaseModel, Base
-    from models.user import User
-    from models.place import Place
-    from models.state import State
-    from models.city import City
-    from models.amenity import Amenity
-    from models.review import Review
-    models = {
-        "BaseModel": BaseModel,
-        "Base": Base,
-        "User": User,
-        "State": State,
-        "City": City,
-        "Place": Place,
-        "Amenity": Amenity,
-        "Review": Review
-    }
-    return models
