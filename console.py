@@ -316,7 +316,7 @@ def check_params(params: list) -> list:
             pass
 
         if param_type == float:
-            match = re.search(r'\d+\.\d+', value)
+            match = re.search(r'[\+-]*\d+\.\d+', value)
             # if float format (<unit>.<decimal>) is not found, skip
             if not match or (match and match.group() != value):
                 continue
