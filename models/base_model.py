@@ -3,7 +3,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy import Column, Integer, String, DateTime
 import models
 
 
@@ -14,9 +14,9 @@ class BaseModel:
     """A base class for all hbnb models"""
 
     id = Column('id', String(60), primary_key=True, nullable=False)
-    created_at = Column('created_at', Date,
+    created_at = Column('created_at', DateTime(timezone=True),
                         default=datetime.utcnow(), nullable=False)
-    updated_at = Column('updated_at', Date,
+    updated_at = Column('updated_at', DateTime(timezone=True),
                         default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
@@ -38,8 +38,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        obj_dict = self.to_dict()
-        del obj_dict['__class__']
+        obj_dict = self.__dict__.copy()
+        del obj_dict['_sa_instance_state']
         return f"[{self.__class__.__name__}] ({self.id}) {obj_dict}"
 
     def save(self):
