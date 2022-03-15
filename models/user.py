@@ -13,6 +13,7 @@ class User(BaseModel, Base):
     password = Column('password', String(128), nullable=False)
     first_name = Column('first_name', String(128))
     last_name = Column('last_name', String(128))
-    places = relationship('Place', cascade='all, delete', back_populates='user')
+    places = relationship('Place', cascade='all, delete',
+                          back_populates='user')
     reviews = relationship('Review', cascade='all, delete',
                            back_populates='user')
