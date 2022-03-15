@@ -9,11 +9,9 @@ from models.base_model import BaseModel, Base
 class City(BaseModel, Base):
     """ The city class, contains state ID and name """
     __tablename__ = "cities"
+    name = Column('name', String(128), nullable=False)
+    state_id = Column('state_id', String(60), ForeignKey('states.id',
+                      ondelete='CASCADE'), nullable=False)
+
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
-        name = Column('name', String(128), nullable=False)
-        state_id = Column('state_id', String(60), ForeignKey('states.id',
-                          ondelete='CASCADE'), nullable=False)
         state = relationship('State', back_populates='cities')
-    else:
-        name = ""
-        state_id = ""
