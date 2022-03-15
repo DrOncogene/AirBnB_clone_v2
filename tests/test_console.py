@@ -797,12 +797,6 @@ class TestUpdateCommand(unittest.TestCase):
         expected = "** value missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
-    def test_update_BaseModel(self):
-        id = self.base.id
-        HBNBCommand().onecmd(f'update BaseModel {id} name "Alx"')
-        key = f"BaseModel.{id}"
-        self.assertEqual(self.base.name, "Alx")
-
     def test_update_User(self):
         id = self.user.id
         self.assertNotEqual(self.user.email, "we@alx.com")
@@ -871,12 +865,6 @@ class TestUpdateCommand(unittest.TestCase):
         expected = "** value missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
-    def test_update_BaseModel_alternate(self):
-        id = self.base.id
-        HBNBCommand().onecmd(f'BaseModel.update({id}, name, "Alx")')
-        key = f"BaseModel.{id}"
-        self.assertEqual(self.base.name, "Alx")
-
     def test_update_User_alternate(self):
         id = self.user.id
         self.assertNotEqual(self.user.email, "we@alx.com")
@@ -918,12 +906,6 @@ class TestUpdateCommand(unittest.TestCase):
         HBNBCommand().onecmd(f'Review.update({id}, user_id, {self.user.id})')
         key = f"Review.{id}"
         self.assertEqual(self.review.user_id, self.user.id)
-
-    def test_update_BaseModel_with_dict(self):
-        id = self.base.id
-        HBNBCommand().onecmd(f'BaseModel.update({id}, {{"name": "Alx"}})')
-        key = f"BaseModel.{id}"
-        self.assertEqual(self.base.name, "Alx")
 
     def test_update_User_with_dict(self):
         id = self.user.id

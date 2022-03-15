@@ -3,7 +3,7 @@
 import os
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
-from models import storage
+import models
 from models.base_model import BaseModel, Base
 from models.city import City
 
@@ -19,7 +19,7 @@ class State(BaseModel, Base):
 
         @property
         def cities(self):
-            all_cities = storage.all(City)
+            all_cities = models.storage.all(City)
             state_cities = [v for k, v in all_cities.items()
                             if v.state_id == self.id]
             return state_cities
