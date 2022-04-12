@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# sets up a data directory for serving releases and tests
 apt-get update
 apt-get install -y --no-upgrade nginx
 mkdir -p /data/web_static/releases/
