@@ -2,7 +2,6 @@
 import os
 from datetime import datetime
 from fabric.decorators import task, runs_once
-from fabric.network import connect
 from fabric.api import local, run, put, env
 
 
