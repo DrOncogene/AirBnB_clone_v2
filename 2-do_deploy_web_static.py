@@ -11,13 +11,13 @@ env.hosts, env.user = ['44.192.32.161', '34.139.191.175'], 'ubuntu'
 
 @task
 def do_deploy(archive_path):
-    '''deploys web_static on to both web servers
+    """deploys web_static on to both web servers
     Args:
         archive_path(str): path to the static file archive
 
     Return:
         True if all ops succeeded or False
-    '''
+    """
     if not ospath.exists(archive_path):
         return False
     archive_name = archive_path.split('/')[-1]
