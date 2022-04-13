@@ -12,8 +12,18 @@ def do_pack():
         os.mkdir("versions")
     now = datetime.now()
     archive_name = "web_static_{}{}{}{}{}{}.tgz".format(
-        now.year, now.month, now.day, now.hour, now.minute, now.second)
+        now.year,
+        now.month,
+        now.day,
+        now.hour,
+        now.minute,
+        now.second
+    )
     archive_path = f"versions/{archive_name}"
-    local(f'tar -czvf {archive_path} web_static')
-    print("web_static packed: {} -> {}Bytes".format(
-          archive_path, os.stat(archive_path).st_size))
+    try:
+        local(f'tar -czvf {archive_path} web_static')
+        print("web_static packed: {} -> {} Bytes".format(
+              archive_path, os.stat(archive_path).st_size))
+        return archive_path
+    except Exception:
+        return None
