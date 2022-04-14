@@ -25,25 +25,42 @@ exec { 'start nginx':
   require => Exec['install nginx'],
 }
 
-file { 'releases directory':
-  path   => '/data/web_static/releases',
+file { 'data directory':
+  path   => '/data',
   ensure => directory,
+  owner  => 'ubuntu',
+  group  => 'ubuntu',
+}
+
+file { 'web_static directory':
+  path    => '/data/web_static',
+  ensure  => directory,
+  require => File['data directory'],
+}
+
+file { 'releases directory':
+  path    => '/data/web_static/releases',
+  ensure  => directory,
+  require => File['web_static directory'],
 }
 
 file { 'shared directory':
-  path   => '/data/web_static/shared/',
-  ensure => directory,
+  path    => '/data/web_static/shared/',
+  ensure  => directory,
+  require => File['web_static directory'],
 }
 
 file { 'test directory':
   path   => '/data/web_static/releases/test/',
   ensure => directory,
+  require => File['releases directory'],
 }
 
 file { 'create a test index.html':
   path    => '/data/web_static/releases/test/index.html',
   ensure  => 'file',
   content => '<h1>testing nginx...</h1>',
+  require => File['test directory'],
 }
 
 file { 'current symlink':
@@ -51,14 +68,6 @@ file { 'current symlink':
   ensure  => link,
   target  => '/data/web_static/releases/test/',
   require => File['test directory'],
-}
-
-file { 'data directory':
-  path    => '/data/',
-  ensure  => directory,
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  require => File['releases directory'],
 }
 
 exec { 'new endpoint':
