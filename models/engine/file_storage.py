@@ -64,3 +64,7 @@ class FileStorage:
             del FileStorage.__objects[key]
         except KeyError:
             pass
+
+    def close(self):
+        """calls the reload method"""
+        self.reload()
