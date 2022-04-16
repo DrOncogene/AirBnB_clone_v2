@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""flask app to display a string a / route"""
+"""flask app to display C + a passed string"""
 from flask import Flask
 
 
