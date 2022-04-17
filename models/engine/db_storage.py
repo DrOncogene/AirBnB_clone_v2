@@ -43,9 +43,8 @@ class DBStorage:
         obj_list = []
         obj_dict = {}
         if cls is None:
-            for key, value in self._classes.items():
-                if key != 'BaseModel' and key != 'Base':
-                    obj_list.extend(session.query(value).all())
+            for value in self._classes.values():
+                obj_list.extend(session.query(value).all())
             for obj in obj_list:
                 key = f"{obj.__class__.__name__}.{obj.id}"
                 obj_dict.update({key: obj})
@@ -85,3 +84,4 @@ class DBStorage:
     def close(self):
         """ calls the reload method"""
         self.__session.remove()
+        self.__session()
