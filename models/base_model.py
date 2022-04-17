@@ -17,7 +17,8 @@ class BaseModel:
     created_at = Column('created_at', DateTime(timezone=True),
                         default=datetime.utcnow(), nullable=False)
     updated_at = Column('updated_at', DateTime(timezone=True),
-                        default=datetime.utcnow(), nullable=False)
+                        default=datetime.utcnow(),
+                        onupdate=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
         """Instatntiates a new model"""

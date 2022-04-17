@@ -12,7 +12,7 @@ class City(BaseModel, Base):
     name = Column('name', String(128), nullable=False)
     state_id = Column('state_id', String(60), ForeignKey('states.id',
                       ondelete='CASCADE'), nullable=False)
-    places = relationship('Place', cascade='all,delete',
+    places = relationship('Place', cascade='all, delete',
                           back_populates='cities')
 
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
