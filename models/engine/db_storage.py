@@ -39,7 +39,7 @@ class DBStorage:
 
     def all(self, cls=None):
         """ queries the db for all objects"""
-        session = self.__session
+        session = self.__session()
         obj_list = []
         obj_dict = {}
         if cls is None:
@@ -62,23 +62,25 @@ class DBStorage:
 
     def new(self, obj):
         """ adds a new obj to the db session"""
-        self.__session.add(obj)
+        session = self.__session()
+        session.add(obj)
 
     def save(self):
         """ commits all changes to db"""
-        self.__session.commit()
+        session = self.__session()
+        session.commit()
 
     def delete(self, obj=None):
         """ deletes obj from the current session"""
         if obj is not None:
-            self.__session.delete(obj)
+            session = self.__session()
+            session.delete(obj)
 
     def reload(self):
         """ creates all db tables"""
         Base.metadata.create_all(self.__engine)
         factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
-        Session = scoped_session(factory)
-        self.__session = Session()
+        self.__session = scoped_session(factory)
 
     def close(self):
         """ calls the reload method"""
