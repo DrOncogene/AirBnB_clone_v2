@@ -1,0 +1,92 @@
+.filters {
+	position: relative;
+	background-color: #FFF;
+	height: 70px;
+	width: 100%;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.filters button {
+	display: inline-block;
+	font-size: 18px;
+	background-color: #FF5A5F;
+	color: #FFF;
+	height: 48px;
+	width: 20%;
+	border: none;
+	border-radius: 4px;
+	position: absolute;
+	right: 30px;
+	cursor: pointer;
+}
+.filters button:hover {
+	opacity: 90%;
+}
+.filters > div {
+	height: 100%;
+	width: 25%;
+	text-align: left;
+	padding: 17px 0;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.filters div:first-child {
+	border-right: 1px solid #ddd;
+}
+.filters > div h3 {
+	font-weight: 600;
+	padding-left: 2.5em;
+}
+.filters > div h4 {
+	font-weight: 400;
+	font-size: 14px;
+	padding-left: 2.5em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.popover {
+	display: none;
+	background-color: #fafafa;
+	width: 100%;
+	max-height: 300px;
+	padding: 2em 1em 2em 2.5em;
+	margin-top: 19px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	text-align: left;
+	-ms-overflow-style: none;
+    	scrollbar-width: none;
+	overflow-y: scroll;
+	position: relative;
+	z-index: 400;
+}
+.popover::-webkit-scrollbar{
+	display: none
+}
+.popover > li {
+	margin-bottom: 0.5em;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.popover ul {
+	margin-bottom: 1em;
+	margin-left: 1em;
+}
+.popover ul li {
+	margin-bottom: 2px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+.popover h2 {
+	font-size: 16px;
+}
+.amenities .popover{
+	position: relative;
+	left: -1px;
+}
+.filters > div:hover .popover{
+	display: block;
+}
