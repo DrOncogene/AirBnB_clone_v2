@@ -11,12 +11,14 @@ from models.city import City
 class State(BaseModel, Base):
     """ State class """
     __tablename__ = "states"
-    name = Column('name', String(128), nullable=False)
 
     if os.getenv("HBNB_TYPE_STORAGE") == 'db':
+        name = Column('name', String(128), nullable=False)
         cities = relationship('City', back_populates='state',
                               cascade="all, delete")
     else:
+        name = ""
+
         @property
         def cities(self):
             all_cities = models.storage.all(City)
