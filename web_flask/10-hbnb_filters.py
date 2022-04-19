@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-display a list of all states and amenities grabbed from the db in the filters
+display a list of all states grabbed from the db
 """
 from flask import Flask, render_template
 from models import storage
@@ -17,12 +17,12 @@ def teardown_session(exception):
 
 
 @app.route('/hbnb_filters', strict_slashes=False)
-def hbnb_filters():
+def states_list():
     states = storage.all(State).values()
     amenities = storage.all(Amenity).values()
     return render_template('10-hbnb_filters.html',
-                           states=states,
-                           amenities=amenities)
+			               states=states,
+						   amenities=amenities)
 
 
 if __name__ == "__main__":
