@@ -64,7 +64,7 @@ class FileStorage:
             return
 
         try:
-            key = f"{obj.to_dict()['__class__']}.{obj.id}"
+            key = f"{}.{}".format(obj.to_dict()['__class__'], obj.id)
             del FileStorage.__objects[key]
         except KeyError:
             pass
