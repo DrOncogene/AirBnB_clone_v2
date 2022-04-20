@@ -27,7 +27,7 @@ def state(id):
     key = "State.{}".format(id)
     if key in states:
         return render_template('9-states.html', state=states[key])
-    else: 
+    else:
         return render_template('9-states.html')
 
 
