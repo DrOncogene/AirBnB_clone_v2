@@ -46,7 +46,7 @@ class DBStorage:
             for value in self._classes.values():
                 obj_list.extend(session.query(value).all())
             for obj in obj_list:
-                key = f"{obj.__class__.__name__}.{obj.id}"
+                key = "{}.{}".format(obj.__class__.__name__, obj.id)
                 obj_dict.update({key: obj})
             return obj_dict
         for key, value in self._classes.items():
@@ -54,7 +54,7 @@ class DBStorage:
                 obj_list.extend(session.query(value).all())
                 break
         for obj in obj_list:
-            key = f"{obj.__class__.__name__}.{obj.id}"
+            key = "{}.{}".format(obj.__class__.__name__, obj.id)
             obj_dict.update({key: obj})
 
         return obj_dict
@@ -82,6 +82,6 @@ class DBStorage:
         self.__session = scoped_session(factory)
 
     def close(self):
-        """ calls the reload method"""
+        """ remove the current session and create a new one"""
         self.__session.remove()
         self.__session()

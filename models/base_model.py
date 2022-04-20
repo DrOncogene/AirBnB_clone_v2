@@ -41,7 +41,10 @@ class BaseModel:
         """Returns a string representation of the instance"""
         obj_dict = self.__dict__.copy()
         del obj_dict['_sa_instance_state']
-        return f"[{self.__class__.__name__}] ({self.id}) {obj_dict}"
+        return "[{}] ({}) {}".format(self.__class__.__name__,
+                                     self.id,
+                                     obj_dict
+                                     )
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""

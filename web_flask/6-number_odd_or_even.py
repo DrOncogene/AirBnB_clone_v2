@@ -20,18 +20,18 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_is_fun(text: str):
-    return f"C {text.replace('_', ' ')}"
+    return "C {}".format(text.replace('_', ' '))
 
 
 @app.route('/python/<text>', strict_slashes=False)
 @app.route('/python', strict_slashes=False)
 def python(text='is cool'):
-    return f"Python {text.replace('_', ' ')}"
+    return "Python {}".format(text.replace('_', ' '))
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
 def is_num(n):
-    return f"{n} is a number"
+    return "{} is a number".format(n)
 
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
@@ -45,5 +45,4 @@ def is_even_or_odd(n):
 
 
 if __name__ == "__main__":
-    app.debug = True
     app.run(host='0.0.0.0', port=5000)

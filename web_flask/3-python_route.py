@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""flask app to display C + a passed string"""
+"""flask app to display python + a passed string"""
 from flask import Flask
 
 
@@ -20,15 +20,14 @@ def hbnb():
 
 @app.route('/c/<text>', strict_slashes=False)
 def c_is_fun(text: str):
-    return f"C {text.replace('_', ' ')}"
+    return "C {}".format(text.replace('_', ' '))
 
 
 @app.route('/python/<text>', strict_slashes=False)
 @app.route('/python', strict_slashes=False)
 def python(text='is cool'):
-    return f"Python {text.replace('_', ' ')}"
+    return "Python {}".format(text.replace('_', ' '))
 
 
 if __name__ == "__main__":
-    app.debug = True
     app.run(host='0.0.0.0', port=5000)
