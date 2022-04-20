@@ -24,8 +24,9 @@ def states_list():
 @app.route('/state/<id>', strict_slashes=False)
 def state(id):
     states = storage.all(State)
-    if "State.{}".format(id) in states:
-        return render_template('9-states.html', state=states[f"State.{id}"])
+    key = "State.{}".format(id)
+    if key in states:
+        return render_template('9-states.html', state=states[key])
     else:
         return render_template('9-states.html')
 
