@@ -21,13 +21,13 @@ def states_list():
     return render_template('9-states.html', states=states)
 
 
-@app.route('/state/<id>', strict_slashes=False)
+@app.route('/states/<id>', strict_slashes=False)
 def state(id):
     states = storage.all(State)
     key = "State.{}".format(id)
     if key in states:
         return render_template('9-states.html', state=states[key])
-    else:
+    else: 
         return render_template('9-states.html')
 
 
