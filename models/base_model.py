@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """This module defines a base class for all models in our hbnb clone"""
+from os import getenv as osgetenv
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -39,7 +40,8 @@ class BaseModel:
     def __str__(self):
         """Returns a string representation of the instance"""
         obj_dict = self.__dict__.copy()
-        del obj_dict['_sa_instance_state']
+        if osgetenv('HBNB_TYPE_STORAGE') == 'db':
+            del obj_dict['_sa_instance_state']
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id,
                                      obj_dict
