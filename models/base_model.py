@@ -41,7 +41,7 @@ class BaseModel:
         """Returns a string representation of the instance"""
         obj_dict = self.__dict__.copy()
         if osgetenv('HBNB_TYPE_STORAGE') == 'db':
-            del obj_dict['_sa_instance_state']
+            obj_dict.pop('_sa_instance_state')
         return "[{}] ({}) {}".format(self.__class__.__name__,
                                      self.id,
                                      obj_dict

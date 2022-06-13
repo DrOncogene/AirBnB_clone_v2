@@ -1,11 +1,12 @@
 #!/usr/bin/python3
+"""compresses and deploy web_static"""
 import os
 from datetime import datetime
 from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env
 
 
-env.hosts, env.user = ['44.192.32.161', '34.139.191.175'], 'ubuntu'
+env.hosts, env.user = ['3.227.253.148', '34.239.157.161'], 'ubuntu'
 
 
 @runs_once
@@ -22,9 +23,9 @@ def do_pack():
         now.minute,
         now.second
     )
-    archive_path = f"versions/{archive_name}"
+    archive_path = "versions/{}".format(archive_name)
     try:
-        local(f'tar -czvf {archive_path} web_static')
+        local('tar -czvf {} web_static'.format(archive_path))
         print("web_static packed: {} -> {} Bytes".format(
               archive_path, os.stat(archive_path).st_size))
         return archive_path
@@ -51,14 +52,14 @@ def do_deploy(archive_path):
              archive_name.split('.')[0]))
         run('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format(
             archive_name, release_dir))
-        run(f'rm /tmp/{archive_name}')
-        run(f'mv /data/web_static/releases/{release_dir}/web_static/*\
-            /data/web_static/releases/{release_dir}/')
+        run('rm /tmp/{}'.format(archive_name))
+        run('mv /data/web_static/releases/{}/web_static/*\
+            /data/web_static/releases/{}/'.format(release_dir))
         run('rm -rf /data/web_static/releases/{}/web_static'.format(
              release_dir))
         run('rm -rf /data/web_static/current')
-        run(f'ln -s -f /data/web_static/releases/{release_dir}/\
-             /data/web_static/current')
+        run('ln -s -f /data/web_static/releases/{}/\
+            /data/web_static/current'.format(release_dir))
         print("New version deployed!")
         return True
     except Exception:

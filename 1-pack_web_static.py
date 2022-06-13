@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""compresses the web_static folder"""
 import os
 from datetime import datetime
 from fabric.decorators import task
@@ -19,9 +20,9 @@ def do_pack():
         now.minute,
         now.second
     )
-    archive_path = f"versions/{archive_name}"
+    archive_path = "versions/{}".format(archive_name)
     try:
-        local(f'tar -czvf {archive_path} web_static')
+        local('tar -czvf {} web_static'.format(archive_path))
         print("web_static packed: {} -> {} Bytes".format(
               archive_path, os.stat(archive_path).st_size))
         return archive_path
