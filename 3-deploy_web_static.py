@@ -6,7 +6,7 @@ from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env
 
 
-env.hosts, env.user = ['3.227.253.148', '34.239.157.161'], 'ubuntu'
+env.hosts, env.user = ['3.236.69.47', '34.204.206.251'], 'ubuntu'
 
 
 @runs_once
