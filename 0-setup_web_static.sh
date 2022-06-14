@@ -9,16 +9,14 @@ echo 'testing nginx config...' > /data/web_static/releases/test/index.html
 ln -s -f /data/web_static/releases/test/ /data/web_static/current
 chown -fhR ubuntu:ubuntu /data/
 
-LINE=$(grep -Eno "^\s*listen \[::\]:80 default_server;" /etc/nginx/sites-available/default | cut -d : -f 1)
+LINE=$(grep -Eno "^\s*location / {" /etc/nginx/sites-available/default | cut -d : -f 1)
 
 EXIST=$(grep -Eco "^\s*location /hbnb_static {" /etc/nginx/sites-available/default)
 
-LOCATION_CONFIG="\tlocation /hbnb_static {\n
-\t\talias /data/web_static/current;\n
-\t}"
+LOCATION_CONFIG="\tlocation /hbnb_static {\n\t\talias /data/web_static/current;\n\t}\n"
 
 if [ "$EXIST" -le 0 ]
 then
-    sudo sed -i "$LINE a\ $LOCATION_CONFIG"  /etc/nginx/sites-available/default
+    sudo sed -i "$LINE i\ $LOCATION_CONFIG"  /etc/nginx/sites-available/default
 fi
 service nginx restart
