@@ -5,7 +5,7 @@ from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env
 
 
-env.hosts, env.user = ['44.192.32.161', '34.139.191.175'], 'ubuntu'
+env.hosts, env.user = ['3.236.69.47', '34.204.206.251'], 'ubuntu'
 
 
 @runs_once
@@ -22,13 +22,14 @@ def do_pack():
         now.minute,
         now.second
     )
-    archive_path = f"versions/{archive_name}"
+    archive_path = "versions/{}".format(archive_name)
     try:
-        local(f'tar -czvf {archive_path} web_static')
+        local('tar -czvf {} web_static'.format(archive_path))
         print("web_static packed: {} -> {} Bytes".format(
               archive_path, os.stat(archive_path).st_size))
         return archive_path
-    except Exception:
+    except Exception as err:
+        print(err)
         return None
 
 
@@ -47,21 +48,22 @@ def do_deploy(archive_path):
     release_dir = archive_name.split('.')[0]
     try:
         put(archive_path, '/tmp/')
-        run("mkdir -p /data/web_static/releases/{}".format(
+        sudo("mkdir -p /data/web_static/releases/{}".format(
              archive_name.split('.')[0]))
-        run('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format(
+        sudo('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format(
             archive_name, release_dir))
-        run(f'rm /tmp/{archive_name}')
-        run(f'mv /data/web_static/releases/{release_dir}/web_static/*\
-            /data/web_static/releases/{release_dir}/')
-        run('rm -rf /data/web_static/releases/{}/web_static'.format(
+        sudo('rm /tmp/{}'.format(archive_name))
+        sudo('mv /data/web_static/releases/{}/web_static/*\
+            /data/web_static/releases/{}/'.format(release_dir, release_dir))
+        sudo('rm -rf /data/web_static/releases/{}/web_static'.format(
              release_dir))
-        run('rm -rf /data/web_static/current')
-        run(f'ln -s -f /data/web_static/releases/{release_dir}/\
-             /data/web_static/current')
+        sudo('rm -rf /data/web_static/current')
+        sudo('ln -s -f /data/web_static/releases/{}/\
+            /data/web_static/current'.format(release_dir))
         print("New version deployed!")
         return True
-    except Exception:
+    except Exception as err:
+        print(err)
         return False
 
 
@@ -85,12 +87,12 @@ def do_clean(number=0):
         number(int): number of archives to keep
     Return: nothing
     '''
-    archives = local('ls -t versions/', capture=True).splitlines()
+    archives = local('ls -t versions/ || true', capture=True).splitlines()
     output = run("ls -t /data/web_static/releases | tr -s '\t\r\n' ' '")
     releases = output.split(' ')
     number = 1 if int(number) in [0, 1] else int(number)
 
     for i in range(number, len(archives)):
-        local(f"rm versions/{archives[i]}")
+        local("rm versions/{}".format(archives[i]))
     for i in range(number, len(releases)):
-        run(f"rm -rf /data/web_static/releases/{releases[i]}")
+        run("rm -rf /data/web_static/releases/{}".format(releases[i]))
