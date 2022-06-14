@@ -87,8 +87,7 @@ def do_clean(number=0):
         number(int): number of archives to keep
     Return: nothing
     '''
-    archives = local('ls -t versions/ || true', capture=True).splitlines()
-    print(archives)
+    archives = os.listdir()
     output = run("ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true")
     releases = output.split(' ')
     number = 1 if int(number) in [0, 1] else int(number)
