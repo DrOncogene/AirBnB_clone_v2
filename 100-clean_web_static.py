@@ -2,7 +2,7 @@
 import os
 from datetime import datetime
 from fabric.decorators import task, runs_once
-from fabric.api import local, run, put, env
+from fabric.api import local, run, put, env, sudo
 
 
 env.hosts, env.user = ['3.236.69.47', '34.204.206.251'], 'ubuntu'
@@ -88,11 +88,12 @@ def do_clean(number=0):
     Return: nothing
     '''
     archives = local('ls -t versions/ || true', capture=True).splitlines()
-    output = run("ls -t /data/web_static/releases | tr -s '\t\r\n' ' '")
+    print(archives)
+    output = run("ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true")
     releases = output.split(' ')
     number = 1 if int(number) in [0, 1] else int(number)
 
     for i in range(number, len(archives)):
-        local("rm versions/{}".format(archives[i]))
+        local("rm -rf versions/{}".format(archives[i]))
     for i in range(number, len(releases)):
-        run("rm -rf /data/web_static/releases/{}".format(releases[i]))
+        sudo("rm -rf /data/web_static/releases/{}".format(releases[i]))
