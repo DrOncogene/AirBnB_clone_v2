@@ -30,6 +30,7 @@ file { 'data directory':
   ensure => directory,
   owner  => 'ubuntu',
   group  => 'ubuntu',
+  mode   => '0755'
 }
 
 file { 'web_static directory':
@@ -37,7 +38,8 @@ file { 'web_static directory':
   ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
-  require => File['data directory'],
+  mode    => '0755'
+  require => File['data directory']
 }
 
 file { 'releases directory':
@@ -45,6 +47,7 @@ file { 'releases directory':
   ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
+  mode    => '0755',
   require => File['web_static directory'],
 }
 
@@ -53,14 +56,16 @@ file { 'shared directory':
   ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
+  mode    => '0755',
   require => File['web_static directory'],
 }
 
 file { 'test directory':
-  path   => '/data/web_static/releases/test/',
-  ensure => directory,
+  path    => '/data/web_static/releases/test/',
+  ensure  => directory,
   owner   => 'ubuntu',
   group   => 'ubuntu',
+  mode    => '0755'
   require => File['releases directory'],
 }
 
@@ -70,6 +75,7 @@ file { 'create a test index.html':
   content => '<h1>testing nginx...</h1>',
   owner   => 'ubuntu',
   group   => 'ubuntu',
+  mode    => '0755',
   require => File['test directory'],
 }
 
@@ -77,6 +83,7 @@ file { 'current symlink':
   path    => '/data/web_static/current',
   ensure  => link,
   target  => '/data/web_static/releases/test/',
+  mode    => '0755',
   require => File['test directory'],
 }
 
