@@ -39,7 +39,8 @@ class BaseModel:
 
     def __str__(self):
         """Returns a string representation of the instance"""
-        obj_dict = self.__dict__.copy()
+        obj_dict = {}
+        obj_dict.update(self.__dict__)
         if osgetenv('HBNB_TYPE_STORAGE') == 'db':
             obj_dict.pop('_sa_instance_state')
         return "[{}] ({}) {}".format(self.__class__.__name__,
@@ -61,7 +62,7 @@ class BaseModel:
         dictionary['created_at'] = self.created_at.isoformat()
         dictionary['updated_at'] = self.updated_at.isoformat()
         try:
-            del dictionary['_sa_instance_state']
+            dictionary.pop('_sa_instance_state')
         except KeyError:
             pass
 
