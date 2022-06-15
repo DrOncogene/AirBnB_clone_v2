@@ -827,7 +827,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_City(self):
         id = self.city.id
         self.assertNotEqual(self.city.state_id, self.state.id)
-        HBNBCommand().onecmd('update City {} state_id {}'.format(id, self.state.id))
+        HBNBCommand().onecmd('update City {} state_id {}'
+                             .format(id, self.state.id))
         key = "City.{}".format(id)
         self.city = storage.all()[key]
         self.assertEqual(self.city.state_id, self.state.id)
@@ -843,7 +844,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_Review(self):
         id = self.review.id
         self.assertNotEqual(self.review.user_id, self.user.id)
-        HBNBCommand().onecmd('update Review {} user_id {}'.format(id, self.user.id))
+        HBNBCommand().onecmd('update Review {} user_id {}'
+                             .format(id, self.user.id))
         key = "Review.{}".format(id)
         self.review = storage.all()[key]
         self.assertEqual(self.review.user_id, self.user.id)
@@ -877,7 +879,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_User_alternate(self):
         id = self.user.id
         self.assertNotEqual(self.user.email, "we@alx.com")
-        HBNBCommand().onecmd('User.update({}, email, "we@alx.com")'.format(id))
+        HBNBCommand().onecmd('User.update({}, email, "we@alx.com")'
+                             .format(id))
         key = "User.{}".format(id)
         self.user = storage.all()[key]
         self.assertEqual(self.user.email, 'we@alx.com')
@@ -901,7 +904,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_City_alternate(self):
         id = self.city.id
         self.assertNotEqual(self.city.state_id, self.state.id)
-        HBNBCommand().onecmd('City.update({}, state_id, {})'.format(id, self.state.id))
+        HBNBCommand().onecmd('City.update({}, state_id, {})'
+                             .format(id, self.state.id))
         key = "City.{}".format(id)
         self.city = storage.all()[key]
         self.assertEqual(self.city.state_id, self.state.id)
@@ -917,7 +921,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_Review_alternate(self):
         id = self.review.id
         self.assertNotEqual(self.review.user_id, self.user.id)
-        HBNBCommand().onecmd('Review.update({}, user_id, {})'.format(id, self.user.id))
+        HBNBCommand().onecmd('Review.update({}, user_id, {})'
+                             .format(id, self.user.id))
         key = "Review.{}".format(id)
         self.review = storage.all()[key]
         self.assertEqual(self.review.user_id, self.user.id)
@@ -925,7 +930,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_User_with_dict(self):
         id = self.user.id
         self.assertNotEqual(self.user.email, "we@alx.com")
-        HBNBCommand().onecmd('User.update({}, {{"email": "we@alx.com"}})'.format(id))
+        HBNBCommand().onecmd('User.update({}, {{"email": "we@alx.com"}})'
+                             .format(id))
         key = "User.{}".format(id)
         self.user = storage.all()[key]
         self.assertEqual(self.user.email, 'we@alx.com')
@@ -933,7 +939,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_State_with_dict(self):
         id = self.state.id
         self.assertNotEqual(self.state.name, "Ibadan")
-        HBNBCommand().onecmd('State.update({}, {{"name": "Ibadan"}})'.format(id))
+        HBNBCommand().onecmd('State.update({}, {{"name": "Ibadan"}})'
+                             .format(id))
         key = "State.{}".format(id)
         self.state = storage.all()[key]
         self.assertEqual(self.state.name, "Ibadan")
@@ -941,8 +948,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_City_with_dict(self):
         id = self.city.id
         self.assertNotEqual(self.city.state_id, self.state.id)
-        HBNBCommand().onecmd(
-                    'City.update({}, {{"state_id": "{}"}})'.format(id, self.state.id))
+        HBNBCommand().onecmd('City.update({}, {{"state_id": "{}"}})'
+                             .format(id, self.state.id))
         key = "City.{}".format(id)
         self.city = storage.all()[key]
         self.assertEqual(self.city.state_id, self.state.id)
@@ -950,7 +957,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_Amenity_with_dict(self):
         id = self.amenity.id
         self.assertNotEqual(self.amenity.name, "Internet")
-        HBNBCommand().onecmd('Amenity.update({}, {{"name": "Internet"}})'.format(id))
+        HBNBCommand().onecmd('Amenity.update({}, {{"name": "Internet"}})'
+                             .format(id))
         key = "Amenity.{}".format(id)
         self.amenity = storage.all()[key]
         self.assertEqual(self.amenity.name, "Internet")
@@ -958,8 +966,8 @@ class TestUpdateCommand(unittest.TestCase):
     def test_update_Review_with_dict(self):
         id = self.review.id
         self.assertNotEqual(self.review.user_id, self.user.id)
-        HBNBCommand().onecmd(
-                'Review.update({}, {{"user_id": "{}"}})'.format(id, self.user.id))
+        HBNBCommand().onecmd('Review.update({}, {{"user_id": "{}"}})'
+                             .format(id, self.user.id))
         key = "Review.{}".format(id)
         self.review = storage.all()[key]
         self.assertEqual(self.review.user_id, self.user.id)

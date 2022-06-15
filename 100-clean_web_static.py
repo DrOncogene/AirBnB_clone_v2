@@ -88,7 +88,8 @@ def do_clean(number=0):
     Return: nothing
     '''
     archives = os.listdir()
-    output = run("ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true")
+    command = "ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true"
+    output = run(command)
     releases = output.split(' ')
     number = 1 if int(number) in [0, 1] else int(number)
 
