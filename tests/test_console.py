@@ -5,7 +5,6 @@ import os
 from io import StringIO
 from unittest.mock import patch
 from models import storage
-from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
@@ -117,54 +116,47 @@ class TestCreateCommand(unittest.TestCase):
         expected = "** class name missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
-    def test_create_with_BaseModel(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-        id = f.getvalue()[:-1]
-        key = "BaseModel.{}".format(id)
-        self.assertIn(key, storage.all().keys())
-
     def test_create_with_User_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
         id = f.getvalue()[:-1]
         key = "User.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_City_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create City")
         id = f.getvalue()[:-1]
         key = "City.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_Place_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Place")
         id = f.getvalue()[:-1]
         key = "Place.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_State_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create State")
         id = f.getvalue()[:-1]
         key = "State.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_Amenity_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create Amenity")
+            HBNBCommand().onecmd("create Amenity name Wifi")
         id = f.getvalue()[:-1]
         key = "Amenity.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_Review_model(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create Review")
         id = f.getvalue()[:-1]
         key = "Review.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_with_params_invalid_syntax(self):
         with patch('sys.stdout', new=StringIO()) as f:
@@ -172,7 +164,7 @@ class TestCreateCommand(unittest.TestCase):
                                   longitude=124.3')
         id = f.getvalue()[:-1]
         key = "Place.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertNotEqual(storage.all()[key].name, "Oregon")
         self.assertNotEqual(storage.all()[key].latitude, 55)
         self.assertEqual(storage.all()[key].longitude, 124.3)
@@ -183,7 +175,7 @@ class TestCreateCommand(unittest.TestCase):
                                   color="Blue"')
         id = f.getvalue()[:-1]
         key = "Place.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         with self.assertRaises(AttributeError):
             storage.all()[key].nginx
             storage.all()[key].size
@@ -195,7 +187,7 @@ class TestCreateCommand(unittest.TestCase):
                                   last_name="Doe"')
         id = f.getvalue()[:-1]
         key = "User.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertEqual(storage.all()[key].first_name, "John")
         self.assertEqual(storage.all()[key].last_name, "Doe")
 
@@ -204,7 +196,7 @@ class TestCreateCommand(unittest.TestCase):
             HBNBCommand().onecmd('create City name="New_York"')
         id = f.getvalue()[:-1]
         key = "City.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertEqual(storage.all()[key].name, "New York")
 
     def test_create_Place_with_params(self):
@@ -213,14 +205,14 @@ class TestCreateCommand(unittest.TestCase):
                                   price_by_night="$50" max_guest=50')
         id = f.getvalue()[:-1]
         key = "Place.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
 
     def test_create_State_with_params(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd('create State name="Lagos"')
         id = f.getvalue()[:-1]
         key = "State.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertEqual(storage.all()[key].name, "Lagos")
 
     def test_create_Amenity_with_params(self):
@@ -228,7 +220,7 @@ class TestCreateCommand(unittest.TestCase):
             HBNBCommand().onecmd('create Amenity name="Internet"')
         id = f.getvalue()[:-1]
         key = "Amenity.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertEqual(storage.all()[key].name, "Internet")
 
     def test_create_Review_with_params(self):
@@ -236,7 +228,7 @@ class TestCreateCommand(unittest.TestCase):
             HBNBCommand().onecmd('create Review text="It_was_awesome"')
         id = f.getvalue()[:-1]
         key = "Review.{}".format(id)
-        self.assertIn(key, storage.all().keys())
+        self.assertIn(key, storage.all())
         self.assertEqual(storage.all()[key].text, "It was awesome")
 
 
@@ -276,16 +268,6 @@ class TestShowCommand(unittest.TestCase):
             HBNBCommand().onecmd("show BaseModel 7585966")
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
-
-    def test_show_with_BaseModel(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-            id = f.getvalue()[:-1]
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("show BaseModel {}".format(id))
-        key = "BaseModel.{}".format(id)
-        obj = storage.all()[key]
-        self.assertEqual(f.getvalue()[:-1], str(obj))
 
     def test_show_with_User(self):
         with patch('sys.stdout', new=StringIO()) as f:
@@ -348,16 +330,6 @@ class TestShowCommand(unittest.TestCase):
             HBNBCommand().onecmd("BaseModel.show(7585966)")
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
-
-    def test_show_with_BaseModel_alternate(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-            id = f.getvalue()[:-1]
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.show({})".format(id))
-        key = "BaseModel.{}".format(id)
-        obj = storage.all()[key]
-        self.assertEqual(f.getvalue()[:-1], str(obj))
 
     def test_show_with_User_alternate(self):
         with patch('sys.stdout', new=StringIO()) as f:
@@ -447,15 +419,6 @@ class TestDestroyCommand(unittest.TestCase):
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
 
-    def test_destroy_with_BaseModel(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-            id = f.getvalue()[:-1]
-        key = "BaseModel.{}".format(id)
-        self.assertIn(key, storage.all().keys())
-        HBNBCommand().onecmd("destroy BaseModel {}".format(id))
-        self.assertNotIn(key, storage.all().keys())
-
     def test_destroy_with_User(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
@@ -522,15 +485,6 @@ class TestDestroyCommand(unittest.TestCase):
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
 
-    def test_destroy_with_BaseModel_alternate(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
-            id = f.getvalue()[:-1]
-        key = "BaseModel.{}".format(id)
-        self.assertIn(key, storage.all().keys())
-        HBNBCommand().onecmd("BaseModel.destroy({})".format(id))
-        self.assertNotIn(key, storage.all().keys())
-
     def test_destroy_with_User_alternate(self):
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create User")
@@ -588,10 +542,9 @@ class TestDestroyCommand(unittest.TestCase):
 
 class TestAllCommand(unittest.TestCase):
     """Tests the all command"""
-
+    @classmethod
     def setUp(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create BaseModel")
             HBNBCommand().onecmd("create User")
             HBNBCommand().onecmd("create State")
             HBNBCommand().onecmd("create City")
@@ -605,15 +558,6 @@ class TestAllCommand(unittest.TestCase):
         expected = []
         for key, obj in storage.all().items():
             expected.append(str(obj))
-        self.assertEqual(f.getvalue()[:-1], str(expected))
-
-    def test_all_with_BaseModel(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("all BaseModel")
-        expected = []
-        for key, obj in storage.all().items():
-            if "BaseModel" in key:
-                expected.append(str(obj))
         self.assertEqual(f.getvalue()[:-1], str(expected))
 
     def test_all_with_User(self):
@@ -667,15 +611,6 @@ class TestAllCommand(unittest.TestCase):
         expected = []
         for key, obj in storage.all().items():
             if "Review" in key:
-                expected.append(str(obj))
-        self.assertEqual(f.getvalue()[:-1], str(expected))
-
-    def test_all_with_BaseModel_alternate(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.all()")
-        expected = []
-        for key, obj in storage.all().items():
-            if "BaseModel" in key:
                 expected.append(str(obj))
         self.assertEqual(f.getvalue()[:-1], str(expected))
 
@@ -736,30 +671,29 @@ class TestAllCommand(unittest.TestCase):
 
 class TestUpdateCommand(unittest.TestCase):
     '''test the update command'''
-
-    def setUp(self):
-        self.base = BaseModel()
-        self.user = User()
-        self.place = Place()
-        self.state = State()
-        self.city = City()
-        self.amenity = Amenity()
-        self.review = Review()
+    @classmethod
+    def setUpClass(cls):
+        cls.user = User()
+        cls.place = Place()
+        cls.state = State()
+        cls.city = City()
+        cls.amenity = Amenity()
+        cls.review = Review()
 
         try:
             os.rename("file.json", "tmp")
         except IOError:
             pass
 
-        self.base.save()
-        self.user.save()
-        self.place.save()
-        self.state.save()
-        self.city.save()
-        self.amenity.save()
-        self.review.save()
+        cls.user.save()
+        cls.place.save()
+        cls.state.save()
+        cls.city.save()
+        cls.amenity.save()
+        cls.review.save()
 
-    def tearDown(self):
+    @classmethod
+    def tearDownClass(self):
         try:
             os.remove("file.json")
         except IOError:
@@ -777,20 +711,20 @@ class TestUpdateCommand(unittest.TestCase):
 
     def test_update_without_id(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update BaseModel")
+            HBNBCommand().onecmd("update User")
         expected = "** instance id missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
     def test_update_with_invalid_id(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update BaseModel an_id")
+            HBNBCommand().onecmd("update User an_id")
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
 
     def test_update_without_attr_name(self):
-        id = self.base.id
+        id = self.user.id
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("update BaseModel {}".format(id))
+            HBNBCommand().onecmd("update User {}".format(id))
         expected = "** attribute name missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
@@ -852,20 +786,20 @@ class TestUpdateCommand(unittest.TestCase):
 
     def test_update_without_id_alternate(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.update()")
+            HBNBCommand().onecmd("User.update()")
         expected = "** instance id missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
     def test_update_with_invalid_id_alternate(self):
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.update(an_id)")
+            HBNBCommand().onecmd("User.update(an_id)")
         expected = "** no instance found **\n"
         self.assertEqual(f.getvalue(), expected)
 
     def test_update_without_attr_name_alternate(self):
         id = self.base.id
         with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.update({})".format(id))
+            HBNBCommand().onecmd("User.update({})".format(id))
         expected = "** attribute name missing **\n"
         self.assertEqual(f.getvalue(), expected)
 
@@ -998,25 +932,37 @@ class TestUpdateCommand(unittest.TestCase):
 
 class TestCountCommand(unittest.TestCase):
     '''test the .count() command'''
+    @classmethod
+    def setUpClass(cls):
+        cls.user = User()
+        cls.place = Place()
+        cls.state = State()
+        cls.city = City()
+        cls.amenity = Amenity()
+        cls.review = Review()
 
-    def setUp(self):
-        self.base = BaseModel()
-        self.user = User()
-        self.place = Place()
-        self.state = State()
-        self.city = City()
-        self.amenity = Amenity()
-        self.review = Review()
+        try:
+            os.rename("file.json", "tmp")
+        except IOError:
+            pass
 
-    def test_count_BaseModel(self):
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("BaseModel.count()")
-        count = int(f.getvalue()[:-1])
-        expected = 0
-        for obj in storage.all().values():
-            if type(obj) is BaseModel:
-                expected += 1
-        self.assertEqual(count, expected)
+        cls.user.save()
+        cls.place.save()
+        cls.state.save()
+        cls.city.save()
+        cls.amenity.save()
+        cls.review.save()
+
+    @classmethod
+    def tearDownClass(cls):
+        try:
+            os.remove("file.json")
+        except IOError:
+            pass
+        try:
+            os.rename("tmp", "file.json")
+        except IOError:
+            pass
 
     def test_count_User(self):
         with patch('sys.stdout', new=StringIO()) as f:

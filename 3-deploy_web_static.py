@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 """compresses and deploy web_static"""
+from sys import argv
 import os
 from datetime import datetime
 from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env, sudo
 
 
-env.hosts, env.user = ['3.236.69.47', '34.204.206.251'], 'ubuntu'
+env.hosts, env.user = ['3.238.119.141', '3.234.213.52'], 'ubuntu'
 
 
 @runs_once
