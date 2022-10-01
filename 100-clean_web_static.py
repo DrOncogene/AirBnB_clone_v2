@@ -5,7 +5,7 @@ from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env, sudo
 
 
-env.hosts, env.user = ['3.236.69.47', '34.204.206.251'], 'ubuntu'
+env.hosts, env.user = ['3.239.112.88', '3.235.184.226'], 'ubuntu'
 
 
 @runs_once
@@ -53,8 +53,8 @@ def do_deploy(archive_path):
         sudo('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format(
             archive_name, release_dir))
         sudo('rm /tmp/{}'.format(archive_name))
-        sudo('mv /data/web_static/releases/{}/web_static/*\
-            /data/web_static/releases/{}/'.format(release_dir, release_dir))
+        sudo('mv /data/web_static/releases/{d}/web_static/*\
+            /data/web_static/releases/{d}/'.format(d=release_dir))
         sudo('rm -rf /data/web_static/releases/{}/web_static'.format(
              release_dir))
         sudo('rm -rf /data/web_static/current')
@@ -87,7 +87,8 @@ def do_clean(number=0):
         number(int): number of archives to keep
     Return: nothing
     '''
-    archives = os.listdir()
+    archives = os.listdir("versions")
+    print("archives found: {}".format(archives))
     command = "ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true"
     output = run(command)
     releases = output.split(' ')
@@ -97,3 +98,5 @@ def do_clean(number=0):
         local("rm -rf versions/{}".format(archives[i]))
     for i in range(number, len(releases)):
         sudo("rm -rf /data/web_static/releases/{}".format(releases[i]))
+    
+    print("Archives cleaned")
