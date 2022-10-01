@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """compresses and deploy web_static"""
-from sys import argv
 import os
 from datetime import datetime
+
 from fabric.decorators import task, runs_once
 from fabric.api import local, run, put, env, sudo
 
 
-env.hosts, env.user = ['3.238.119.141', '3.234.213.52'], 'ubuntu'
+env.hosts, env.user = ['3.239.112.88', '3.235.184.226'], 'ubuntu'
 
 
 @runs_once
@@ -54,7 +54,7 @@ def do_deploy(archive_path):
              archive_name.split('.')[0]))
         sudo('tar -xzf /tmp/{} -C /data/web_static/releases/{}'.format(
             archive_name, release_dir))
-        sudo('rm /tmp/{}'.format(archive_name))
+        run('rm /tmp/{}'.format(archive_name))
         sudo('mv /data/web_static/releases/{}/web_static/*\
             /data/web_static/releases/{}/'.format(release_dir, release_dir))
         sudo('rm -rf /data/web_static/releases/{}/web_static'.format(
