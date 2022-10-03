@@ -87,12 +87,17 @@ def do_clean(number=0):
         number(int): number of archives to keep
     Return: nothing
     '''
-    archives = os.listdir("versions")
-    print("archives found: {}".format(archives))
-    command = "ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true"
-    output = run(command)
-    releases = output.split(' ')
-    number = 1 if int(number) in [0, 1] else int(number)
+    local_comm = "ls -t ./versions | tr -s '\t\r\n' ' ' || true"
+    comm = "ls -t /data/web_static/releases | tr -s '\t\r\n' ' ' || true"
+    archives = local(local_comm, capture=True)
+    archives = archives.split(" ")
+    print("Local archives found: ", archives)
+    remote_archives = run(comm)
+    releases = remote_archives.split(" ")
+    print("Remote archives found: ", releases)
+    number = int(number)
+    if number in [0, 1]:
+        number = 1
 
     for i in range(number, len(archives)):
         local("rm -rf versions/{}".format(archives[i]))
